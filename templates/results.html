@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Results for {{ dataset_name }}</title>
+</head>
+<body>
+    <nav id="toc-container">
+        <button id="toc-toggle">&#9776; Table of Contents
+        </button>
+        <button id="toc-slide-toggle">&#187;</button>
+        <div id="toc">
+            <ul id="toc-list"></ul>
+        </div>
+    </nav>
+    <h1>Results for Dataset: {{ dataset_name }}</h1>
+    <p style="text-align: center">{{ metadata.theme }}</p>
+
+    <h2 id="metadata-heading">Metadata:</h2>
+    <p><strong>Number of Records:</strong> {{ metadata.num_records }}</p>
+    <p><strong>Description:</strong></p>
+    <p>{{ metadata.description }}</p>
+    <p><strong>Last Modified:</strong> {{ metadata.last_modified }}</p>
+
+    <h2 id="description-heading">Data Description:</h2>
+    <div id="data-description">
+        {{ data_description | safe }}
+    </div>
+
+    <h2 id="visualizations-heading">Visualizations:</h2>
+    <div id="visualizations">
+        {% if filenames %}
+        {% for filename in filenames %}
+        <iframe src="/static/visualizations/{{ filename }}" width="100%" height="600px" frameborder="0"></iframe>
+        {% endfor %}
+        {% else %}
+        <p>No visualizations available.</p>
+        {% endif %}
+    </div>
+
+    <a href="/">Back to Search</a>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const tocContainer = document.getElementById('toc-container');
+    const tocToggle = document.getElementById('toc-toggle');
+    const tocSlideToggle = document.getElementById('toc-slide-toggle');
+    const tocList = document.getElementById('toc-list');
+    const headings = document.querySelectorAll('h2');
+
+    tocToggle.addEventListener('click', function() {
+        tocContainer.classList.toggle('expanded');
+        tocContainer.classList.toggle('collapsed');
+    });
+
+    tocSlideToggle.addEventListener('click', function() {
+        tocContainer.classList.toggle('hidden');
+        tocSlideToggle.textContent = tocContainer.classList.contains('hidden') ? '«' : '»';
+    });
+
+    headings.forEach(heading => {
+        if (!heading.id) {
+            heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+
+        const tocItem = document.createElement('li');
+        const tocLink = document.createElement('a');
+        tocLink.href = `#${heading.id}`;
+        tocLink.textContent = heading.textContent;
+        tocItem.appendChild(tocLink);
+        tocList.appendChild(tocItem);
+    });
+
+    // Initialize as collapsed and hidden
+    tocContainer.classList.add('collapsed');
+});
+
+
+    </script>
+</body>
+
+</html>
