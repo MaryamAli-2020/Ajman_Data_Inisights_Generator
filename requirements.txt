@@ -1,0 +1,1 @@
+pip install Flask pandas requests plotly beautifulsoup4
