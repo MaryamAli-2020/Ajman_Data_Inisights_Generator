@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Insights Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Search for Datasets</h1>
+    <form action="/search" method="post">
+        <input type="text" name="query" placeholder="Enter dataset name" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <p id="debug-info"></p>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var query = document.querySelector('input[name="query"]').value;
+        console.log('Submitting query:', query); // Log the query for debugging
+    });
+    </script>
+</body>
+</html>
