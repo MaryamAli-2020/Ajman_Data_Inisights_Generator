@@ -1,1 +1,6 @@
-pip install Flask gunicorn pandas requests plotly beautifulsoup4
+Flask
+gunicorn
+pandas
+requests
+plotly
+beautifulsoup4
